@@ -75,15 +75,18 @@ public class BanckController {
                                         } else if (optionRetiro == 2) {
                                             GestorCuentas.retirarSobregiro(cuentaBase);
                                         }
+                                    }else if(subOption == 2){
+                                        GestorCuentas.retirar(cuentaBase);
                                     }
                                     Scripts.pressEnter();
                                     break;
                                 case 3:
                                     System.out.println("Depositar");
-                                    GestorCuentas.depositar(cuentaBase);
+                                    GestorCuentas.depositar(cuentaBase,subOption);
                                     Scripts.pressEnter();
                                     break;
                                 case 4:
+
                                     if (subOption == 1){
                                         System.out.println("Ver valor sobregiro");
                                         CuentaCorriente cuentaCorriente = (CuentaCorriente) cuentaBase;

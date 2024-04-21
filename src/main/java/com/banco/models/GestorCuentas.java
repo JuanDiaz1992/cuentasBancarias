@@ -71,13 +71,14 @@ public class GestorCuentas{
 
     }
 
-    public static void depositar(CuentaBase cuentaBase) {
+    public static void depositar(CuentaBase cuentaBase, int typeCuenta) {
         Scanner scanner = new Scanner(System.in);
         System.out.print("Ingrese la cantidad de saldo a depositar: ");
         double cantdad = scanner.nextInt();
         if(cuentaBase.depositar(cantdad)){
         System.out.println("Saldo registrado correctamente, nuevo saldo: "+cuentaBase.consultarSaldo());
-        if (cuentaBase.consultarSaldo() + cantdad >=0){
+        int cuentaAhorroOption = 1;
+        if (cuentaBase.consultarSaldo() + cantdad >=0 && typeCuenta == cuentaAhorroOption){
             CuentaCorriente cuentaAhorro = (CuentaCorriente) cuentaBase;
             cuentaAhorro.setUsedSobregiro(false);
         }
@@ -115,7 +116,9 @@ public class GestorCuentas{
     public static void calcularInteres(CuentaAhorro cuentaBase, int meses){
         if (cuentaBase.consultarSaldo() > 0){
             double interesAcomulado = cuentaBase.consultarSaldo()*cuentaBase.getTasaInteres()*meses/12;
-            System.out.println("El valor del interés acomulado por "+meses+" es de: "+interesAcomulado);
+            String resultadoFormateado = String.format("%.2f", interesAcomulado);
+            System.out.print("El valor del interés acomulado por "+meses+" es de: "+resultadoFormateado);
+
         }else {
             System.out.println("Tu cuenta no tiene saldo");
         }
