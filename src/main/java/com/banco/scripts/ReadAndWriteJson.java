@@ -26,23 +26,7 @@ public class ReadAndWriteJson {
         File file = new File(filePath);
 
         if (!file.exists()) {
-            try {
-                ObjectNode rootNode = mapper.createObjectNode();
-                Files.createFile(Paths.get(filePath));
-                System.out.println("Archivo creado: " + filePath);
-
-                // Inicializar los arrays vacíos dentro del JSON.
-                rootNode.putArray("CuentaCorriente");
-                rootNode.putArray("CuentaAhorro");
-
-                // Escribir el objeto JSON inicial con los arrays vacíos.
-                try (FileWriter writer = new FileWriter(filePath)) {
-                    mapper.writeValue(writer, rootNode);
-                    writer.close();
-                }
-            } catch (IOException e) {
-                e.printStackTrace();
-            }
+            ReadAndWriteJson.crearArchivo(filePath);
         }
         try {
             List<CuentaBase> cuentas = new ArrayList<>();
@@ -75,22 +59,7 @@ public class ReadAndWriteJson {
             File file = new File(filePath);
             ObjectNode rootNode = mapper.createObjectNode();
             if (!file.exists()) {
-                try {
-                    Files.createFile(Paths.get(filePath));
-                    System.out.println("Archivo creado: " + filePath);
-
-                    // Inicializar los arrays vacíos dentro del JSON.
-                    rootNode.putArray("CuentaCorriente");
-                    rootNode.putArray("CuentaAhorro");
-
-                    // Escribir el objeto JSON inicial con los arrays vacíos.
-                    try (FileWriter writer = new FileWriter(filePath)) {
-                        mapper.writeValue(writer, rootNode);
-                        writer.close();
-                    }
-                } catch (IOException e) {
-                    e.printStackTrace();
-                }
+                ReadAndWriteJson.crearArchivo(filePath);
             }
             JsonNode cuentasNode = mapper.readTree(file);
 
@@ -160,7 +129,29 @@ public class ReadAndWriteJson {
             throw new RuntimeException(e);
         }
     }
+
+    public static void crearArchivo(String filePath){
+        try {
+            ObjectNode rootNode = mapper.createObjectNode();
+            Files.createFile(Paths.get(filePath));
+            System.out.println("Archivo creado: " + filePath);
+
+            // Inicializar los arrays vacíos dentro del JSON.
+            rootNode.putArray("CuentaCorriente");
+            rootNode.putArray("CuentaAhorro");
+
+            // Escribir el objeto JSON inicial con los arrays vacíos.
+            try (FileWriter writer = new FileWriter(filePath)) {
+                mapper.writeValue(writer, rootNode);
+                writer.close();
+            }
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
 }
+
+
 
 
 
