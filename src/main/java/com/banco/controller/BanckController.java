@@ -32,16 +32,17 @@ public class BanckController {
                     System.out.println("1) Cuenta corriente");
                     System.out.println("2) Cuenta de ahorros");
                     System.out.print("Elija: ");
-                    int subOption = scanner.nextInt();
-                    if (subOption>2 || subOption<0) {
+                    int typeObjetc = scanner.nextInt();
+                    if (typeObjetc>2 || typeObjetc<0) {
                         break;
                     }
-                    System.out.print("Ingrese el número de cuenta: ");
-                    int numCuenta = scanner.nextInt();
+                    System.out.print("Ingrese el número de cuenta (ID): ");
+                    int id = scanner.nextInt();
                     scanner.nextLine();
                     System.out.print("Ingrese su contraseña: ");
                     String password = scanner.nextLine();
-                    CuentaBase cuentaBase = GestorCuentas.buscarCuenta(numCuenta,subOption,password);
+                    CuentaBase cuentaBase = GestorCuentas.buscarCuenta(id,typeObjetc,password);
+
                     if (cuentaBase!=null){
                         int optionCuenta;
                         do {
@@ -49,7 +50,7 @@ public class BanckController {
                             System.out.println("1) Ver saldo");
                             System.out.println("2) Retirar saldo");
                             System.out.println("3) Agregar saldo");
-                            if (subOption == 1) {
+                            if (typeObjetc == 1) {
                                 System.out.println("4) Ver valor sobregiro");
                             } else {
                                 System.out.println("4) Ver interés acomulado");
@@ -65,7 +66,7 @@ public class BanckController {
                                     break;
                                 case 2:
                                     System.out.println("Retirar saldo");
-                                    if (subOption == 1){
+                                    if (typeObjetc == 1){
                                         System.out.println("1) Retiro saldo en cuenta");
                                         System.out.println("2) Retiro de sobregiro");
                                         System.out.print("Elija una de las opciones: ");
@@ -75,24 +76,24 @@ public class BanckController {
                                         } else if (optionRetiro == 2) {
                                             GestorCuentas.retirarSobregiro(cuentaBase);
                                         }
-                                    }else if(subOption == 2){
+                                    }else if(typeObjetc == 2){
                                         GestorCuentas.retirar(cuentaBase);
                                     }
                                     Scripts.pressEnter();
                                     break;
                                 case 3:
                                     System.out.println("Depositar");
-                                    GestorCuentas.depositar(cuentaBase,subOption);
+                                    GestorCuentas.depositar(cuentaBase,typeObjetc);
                                     Scripts.pressEnter();
                                     break;
                                 case 4:
 
-                                    if (subOption == 1){
+                                    if (typeObjetc == 1){
                                         System.out.println("Ver valor sobregiro");
                                         CuentaCorriente cuentaCorriente = (CuentaCorriente) cuentaBase;
                                         System.out.println("Tu limite de sobregiro es de: "+cuentaCorriente.getLimiteSobreGiro());
                                         System.out.println("Para usarlo ve a la opción 2 y seleciona Retiro de sobregiro.");
-                                    }else if (subOption == 2){
+                                    }else if (typeObjetc == 2){
                                         System.out.println("Ver interés acomulado");
                                         System.out.print("Indique la cantidad de meses de 1 a 12: ");
                                         int cantMeses = scanner.nextInt();

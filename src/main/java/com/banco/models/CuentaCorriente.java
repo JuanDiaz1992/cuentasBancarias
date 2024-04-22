@@ -1,25 +1,28 @@
 
 package com.banco.models;
 import com.banco.models.base.CuentaBase;
+import com.banco.scripts.ReadAndWriteJson;
 
 public class CuentaCorriente extends CuentaBase {
-
     protected double limiteSobreGiro;
-    protected boolean isUsedSobregiro = false;
-    public CuentaCorriente(double limiteSobreGiro, int document, String password){
-        super(document, password);
+    protected boolean usedSobregiro;
+    public CuentaCorriente(int document, String password,int id, double saldo, int typeCuenta, boolean usedSobregiro, double limiteSobreGiro){
+        super(document, password, id, saldo, typeCuenta);
         this.limiteSobreGiro = limiteSobreGiro;
+        this.usedSobregiro = usedSobregiro;
     }
+    public CuentaCorriente(){}
 
     public void retirarSobreGiro(){
-        if (!this.isUsedSobregiro){
+        if (!this.usedSobregiro && this.saldo>=0){
             this.saldo -= this.limiteSobreGiro;
-            if (this.saldo<0){
-                this.isUsedSobregiro = true;
-            }
+            this.usedSobregiro = true;
+            Boolean state = true;
+            ReadAndWriteJson.editJson(this.getId(),"saldo", this.saldo);
+            ReadAndWriteJson.editJson(this.getId(),"usedSobregiro", state);
             System.out.println("Retiro exitoso, tu saldo actual es de: "+this.saldo);
         }else {
-            System.out.println("No puedes realizar el retiro del sobregiro.");
+            System.out.println("No puedes realizar el retiro del sobregiro hasta que pagues ."+this.saldo);
         }
     }
 
@@ -32,10 +35,12 @@ public class CuentaCorriente extends CuentaBase {
     }
 
     public boolean isUsedSobregiro() {
-        return isUsedSobregiro;
+        return usedSobregiro;
     }
 
     public void setUsedSobregiro(boolean usedSobregiro) {
-        isUsedSobregiro = usedSobregiro;
+        usedSobregiro = usedSobregiro;
+        boolean bolean = false;
+        ReadAndWriteJson.editJson(this.getId(),"usedSobregiro", bolean);
     }
 }
